@@ -1,6 +1,9 @@
 <template>
-    <div>
-        <button @click.prevent="fetch_longWords">Fetch long words</button>
+    <div v-if="!is_loaded">
+        <loader />
+    </div>
+    <div v-else>
+        <!-- <button @click.prevent="fetch_longWords">Fetch long words</button> -->
         <div v-if="not_length !== null" style="justify-content:center">
           <h2>Long Words:</h2>
           <ul>
@@ -23,13 +26,21 @@
 </template>
 
 <script>
+import loader from './loader.vue';
 export default{
     name: 'not_length',
+    components:{
+        loader,
+    },
     data(){
         return{
             fetched: false,
             not_length: null,
+            is_loaded: false
         }
+    },
+    mounted(){
+      this.fetch_longWords();
     },
     methods:{
       async fetch_longWords(){
@@ -44,6 +55,7 @@ export default{
                 this.fetched=true
                 const data = await response.json();
                 this.not_length = data;
+                this.is_loaded=true
                 console.log('Fetched not_length words:', this.not_length);
             } catch (error) {
                 console.error('Error fetching data:', error);

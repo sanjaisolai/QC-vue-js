@@ -1,34 +1,41 @@
 <template>
-    <button v-if="available===null" @click="check_availability();fetched=true">Check if images are uploaded</button>
     <div v-if="available===1">
         <div v-if="progress!==100">
-            <p>Image is availabe :)</p>
-            <button @click="startFetchingProgress">fetch images</button>
-            <div>
-                <p>Processing: {{ progress }}</p>
+            <div class="container mt-4 text-center">
+                <h2 id="progress-text" class="text-center">Task is still processing: {{ progress }}%</h2>
+                <div id="loader" class="d-flex justify-content-center align-items-center mt-4">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
             </div>
         </div>
         <div v-else>
-            <div v-for="(fields, record) in not_hd_image" :key="record" class="mb-4">
-                <h2 class="record-title">Record {{ record }}</h2>
-                <ul class="list-group">
-                <li v-for="(words, field) in fields" :key="field" class="list-group-item">
-                    <strong>Image:</strong>
-                    <br>
-                    <div v-for="word in words" :key="word" class="image-item">
-                        <img :src="word" alt="Image in doubt">
-                        <input type="checkbox" value="Done" class="ms-2">
-                    </div>
-                </li>
-                </ul>
-            </div>
-            <div>
-                <h2>URLS that seem to be broken: </h2>
-                <ul>
-                    <li v-for="x in broken_urls">
-                        {{ x }}
+            <div v-if="progress === 100 && not_hd_image && Object.keys(not_hd_image).length > 0 && broken_urls && broken_urls.length > 0">
+                <div v-for="(fields, record) in not_hd_image" :key="record" class="mb-4">
+                    <h2 class="record-title">Record {{ record }}</h2>
+                    <ul class="list-group">
+                    <li v-for="(words, field) in fields" :key="field" class="list-group-item">
+                        <strong>Image:</strong>
+                        <br>
+                        <div v-for="word in words" :key="word" class="image-item">
+                            <img :src="word" alt="Image in doubt">
+                            <input type="checkbox" value="Done" class="ms-2">
+                        </div>
                     </li>
-                </ul>
+                    </ul>
+                </div>
+                <div>
+                    <h2>URLS that seem to be broken: </h2>
+                    <ul>
+                        <li v-for="x in broken_urls">
+                            {{ x }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div v-else>
+                <h2>All images are hd</h2>
             </div>
         </div>
         
@@ -39,8 +46,12 @@
 </template>
 
 <script>
+import loader from './loader.vue';
 export default{
     name: 'image_page',
+    components:{
+        loader
+    },
     data(){
         return{
             fetched: false,
@@ -50,6 +61,10 @@ export default{
             broken_urls:null,
             interval: null
         }
+    },
+    mounted(){
+        this.check_availability()
+        
     },
     methods:{
         async check_availability(){
@@ -64,6 +79,9 @@ export default{
                 this.fetched=true;
                 const data = await response.json()
                 this.available=data.response
+                if(this.available===1){
+                    this.startFetchingProgress()
+                }
                             
             }catch(error){
                 console.log(error)

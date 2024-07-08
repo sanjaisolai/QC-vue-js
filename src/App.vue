@@ -14,16 +14,16 @@
             <li class="nav-item" @click="refresh">
               <a class="nav-link active" aria-current="page" href="#">upload</a>
             </li>
-            <li class="nav-item" @click="master_spell=true; long_spell=false;first_letter=false;not_length= false;image=false;fssai_display=false">
+            <li class="nav-item" @click="master_spell=true; long_spell=false;first_letter=false;not_length= false;image_page=false;fssai_display=false">
               <a class="nav-link active" aria-current="page" href="#">master file spell check</a>
             </li>
-            <li class="nav-item" @click="long_spell=true; master_spell=false;first_letter=false;not_length= false;image=false;fssai_display=false">
+            <li class="nav-item" @click="long_spell=true; master_spell=false;first_letter=false;not_length= false;image_page=false;fssai_display=false">
               <a class="nav-link active" aria-current="page" href="#">Long Description spell check</a>
             </li>
-            <li class="nav-item" @click="first_letter=true; master_spell=false;long_spell=false;not_length= false;image=false;fssai_display=false">
+            <li class="nav-item" @click="first_letter=true; master_spell=false;long_spell=false;not_length= false;image_page=false;fssai_display=false">
               <a class="nav-link active" aria-current="page" href="#">Title case check</a>
             </li>
-            <li class="nav-item" @click="not_length=true; master_spell=false;long_spell=false;first_letter=false;image=false;fssai_display=false">
+            <li class="nav-item" @click="not_length=true; master_spell=false;long_spell=false;first_letter=false;image_page=false;fssai_display=false">
               <a class="nav-link active" aria-current="page" href="#">Length check</a>
             </li>
             <li class="nav-item" @click="image_page=true; master_spell=false;long_spell=false;first_letter=false;not_length=false;fssai_display=false">

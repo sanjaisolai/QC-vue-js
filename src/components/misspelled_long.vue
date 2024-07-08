@@ -1,6 +1,9 @@
 <template>
-    <div>
-    <button @click.prevent="fetch_words">Fetch Misspelled Words</button>
+    <div v-if="!is_loaded">
+        <loader />
+    </div>
+    <div v-else>
+    <!-- <button @click.prevent="fetch_words">Fetch Misspelled Words</button> -->
     <div v-if="misspelled_long !== null" style="justify-content:center">
       <h2>Misspelled Words:</h2>
       <ul>
@@ -23,14 +26,22 @@
 
 
 <script>
+import loader from './loader.vue';
 export default{
     name: 'misspelled_long',
+    components:{
+        loader,
+    },
     data(){
         return{
             fetched: false,
             misspelled_long: null,
-            word_to_be_added: 'sample'
+            word_to_be_added: 'sample',
+            is_loaded: false
         }
+    },
+    mounted(){
+        this.fetch_words();
     },
     methods:{
         async fetch_words() {
@@ -45,6 +56,7 @@ export default{
                 this.fetched=true
                 const data = await response.json();
                 this.misspelled_long = data;
+                this.is_loaded=true
                 console.log('Fetched misspelled_long words:', this.misspelled_long);
             } catch (error) {
                 console.error('Error fetching data:', error);

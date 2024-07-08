@@ -1,5 +1,4 @@
 <template>
-<button @click="fetch_data">fetch fssai</button>
 <div v-if="fetched===true">
     <ul>
         <li v-for="x in not_fssai">
@@ -17,6 +16,9 @@ export default{
             not_fssai: null,
             fetched: false
         }
+    },
+    mounted(){
+        this.fetch_data();
     },
     methods:{
         async fetch_data(){
