@@ -28,7 +28,6 @@ export default{
         return{
             fetched: false,
             first_letter: null,
-            word_to_be_added: 'sample'
         }
     },
     methods:{

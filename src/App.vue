@@ -11,21 +11,29 @@
       <nav :class="['navbar', `navbar-dark`, `bg-dark`]">
         <div class="container-fluid">
           <ul class="nav">
-            <li class="nav-item" @click="upload=false">
+            <li class="nav-item" @click="refresh">
               <a class="nav-link active" aria-current="page" href="#">upload</a>
             </li>
-            <li class="nav-item" @click="master_spell=true; long_spell=false;first_letter=false;not_length= false">
+            <li class="nav-item" @click="master_spell=true; long_spell=false;first_letter=false;not_length= false;image=false;fssai_display=false">
               <a class="nav-link active" aria-current="page" href="#">master file spell check</a>
             </li>
-            <li class="nav-item" @click="long_spell=true; master_spell=false;first_letter=false;not_length= false">
+            <li class="nav-item" @click="long_spell=true; master_spell=false;first_letter=false;not_length= false;image=false;fssai_display=false">
               <a class="nav-link active" aria-current="page" href="#">Long Description spell check</a>
             </li>
-            <li class="nav-item" @click="first_letter=true; master_spell=false;long_spell=false;not_length= false">
+            <li class="nav-item" @click="first_letter=true; master_spell=false;long_spell=false;not_length= false;image=false;fssai_display=false">
               <a class="nav-link active" aria-current="page" href="#">Title case check</a>
             </li>
-            <li class="nav-item" @click="not_length=true; master_spell=false;long_spell=false;first_letter=false">
+            <li class="nav-item" @click="not_length=true; master_spell=false;long_spell=false;first_letter=false;image=false;fssai_display=false">
               <a class="nav-link active" aria-current="page" href="#">Length check</a>
             </li>
+            <li class="nav-item" @click="image_page=true; master_spell=false;long_spell=false;first_letter=false;not_length=false;fssai_display=false">
+              <a class="nav-link active" aria-current="page" href="#">Image</a>
+            </li>
+            <div v-if="packaged==='1' && progress===100">
+            <li class="nav-item" @click="fssai_display=true; master_spell=false;long_spell=false;first_letter=false;not_length=false;image_page=false">
+              <a class="nav-link active" aria-current="page" href="#">fssai</a>
+            </li>
+          </div>
           </ul>
         </div>
       </nav>
@@ -43,6 +51,12 @@
       <div v-else-if="not_length">
         <length />
       </div>
+      <div v-else-if="image_page">
+        <image_page @image_success="call_fssai" />
+      </div>
+      <div v-else-if="fssai_display">
+        <fssai />
+      </div>
     </div>
   </div>
 </template>
@@ -53,6 +67,8 @@ import misspelled from './components/misspelled.vue';
 import misspelled_long from './components/misspelled_long.vue';
 import first_letter from './components/first_letter.vue';
 import length from './components/length.vue';
+import image_page from './components/image.vue';
+import fssai from './components/fssai.vue';
 
 export default {
   name: 'App',
@@ -61,7 +77,9 @@ export default {
     misspelled,
     misspelled_long,
     first_letter,
-    length
+    length,
+    image_page,
+    fssai
   },
   data() {
     return {
@@ -69,12 +87,23 @@ export default {
       master_spell: false,
       long_spell: false,
       first_letter: false,
-      not_length: false
+      not_length: false,
+      image_page: false,
+      fssai_display: false,
+      packaged: '1',
+      progress: 0
     };
   },
   methods: {
-    upload_status() {
+    upload_status(is_packaged) {
       this.upload = true; // Update upload status to true on successful upload
+      this.packaged=is_packaged
+    },
+    refresh(){
+      location.reload();
+    },
+    call_fssai(progress){
+      this.progress=progress
     }
   }
 };

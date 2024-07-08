@@ -29,7 +29,6 @@ export default{
         return{
             fetched: false,
             not_length: null,
-            word_to_be_added: 'sample'
         }
     },
     methods:{

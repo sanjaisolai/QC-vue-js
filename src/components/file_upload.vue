@@ -68,10 +68,10 @@ export default {
           else{
             this.message='';
             if (this.type === 'long') {
-              this.$emit('upload_success'); // Emit event when upload is successful
+              this.$emit('upload_success',this.packaged); 
             }
             if (this.type === 'raw') {
-              this.type = 'long'; // Switch to 'long' type after uploading 'raw'
+              this.type = 'long'; 
             }
           }
         } else {
