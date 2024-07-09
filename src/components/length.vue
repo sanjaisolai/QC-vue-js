@@ -1,28 +1,37 @@
 <template>
     <div v-if="!is_loaded">
-        <loader />
+      <div v-if="!issue">
+          <loader />
+      </div>
+      <div v-else>
+          <h1>Problem with the server</h1>
+      </div>
     </div>
     <div v-else>
-        <!-- <button @click.prevent="fetch_longWords">Fetch long words</button> -->
-        <div v-if="not_length !== null" style="justify-content:center">
-          <h2>Long Words:</h2>
-          <ul>
-            <li v-for="(words, index) in not_length" :key="index">
-              Record {{ index }}:
-              <ul>
-                <li v-for="(word, field) in words" :key="field">
-                  <strong>{{ field }}:</strong>
-                   <li v-for="x in word">
-                    {{ x + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;length: ' + x.length }}
-
-                   </li>
+    <!-- <button @click.prevent="fetch_longWords">Fetch long words</button> -->
+    <div v-if="not_length && Object.keys(not_length).length>0" style="justify-content:center">
+        <h2>Long Words:</h2>
+        <div class="container mt-4">
+            <ul>
+                <li v-for="(words, index) in not_length" :key="index">
+                    Record {{ index }}:
+                    <ul class="list-group">
+                        <li class="list-group-item" v-for="(word, field) in words" :key="field">
+                            <strong>{{ field }}:</strong>
+                            <ul>
+                                <li v-for="x in word">
+                                    {{ x }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;length: {{ x.length }}
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </li>
-              </ul>
-            </li>
-          </ul>
+            </ul>
         </div>
-        <p v-else-if="not_length===null && fetched">No Spell errors Detected</p>
-      </div>
+    </div>
+    <p v-else-if="not_length !== null && fetched">No Spell errors Detected</p>
+</div>
+
 </template>
 
 <script>
@@ -36,7 +45,8 @@ export default{
         return{
             fetched: false,
             not_length: null,
-            is_loaded: false
+            is_loaded: false,
+            issue: false
         }
     },
     mounted(){
@@ -50,6 +60,7 @@ export default{
                 });
                 
                 if (!response.ok) {
+                    this.issue=true
                     throw new Error('Failed to fetch data');
                 }
                 this.fetched=true
@@ -58,6 +69,7 @@ export default{
                 this.is_loaded=true
                 console.log('Fetched not_length words:', this.not_length);
             } catch (error) {
+                this.issue=true
                 console.error('Error fetching data:', error);
             }
         }

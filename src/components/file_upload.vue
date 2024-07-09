@@ -1,28 +1,40 @@
 <template>
-  <div>
-    <h1>Upload Excel Sheet</h1>
-    <div v-if="type === 'raw'">
-      <p>Master file:</p>
-      <form @submit.prevent="uploadFile">
-        <label for="packaged" class="form-label">Packaged Food Item:</label>
-        <select v-model="packaged" class="form-select" id="packaged" name="packaged">
-          <option value="1">Packaged food item</option>
-          <option value="0">Not a Packaged Food item</option>
-        </select>
-        <input type="file" accept=".xlsx" @change="handleFileUpload" />
-        <button type="submit">Upload</button>
-        <p>{{ message }}</p>
-      </form>
+<div>
+    <div v-if="type === 'raw'" class="container mt-4">
+        <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading">Note:</h4>
+            <p>Do not interchange and upload the files.</p>
+        </div>
+        <h1 class="mb-4">Masterfile:</h1>
+        <form @submit.prevent="uploadFile" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="packaged" class="form-label">Packaged Food Item:</label>
+                <select v-model="packaged" class="form-select" id="packaged" name="packaged">
+                    <option value="1">Packaged food item</option>
+                    <option value="0">Not a Packaged Food item</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="excel_file" class="form-label">Choose Excel File:</label>
+                <input class="form-control" type="file" id="excel_file" name="excel_file" accept=".xlsx, .xls" @change="handleFileUpload" />
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+            <p>{{ message }}</p>
+        </form>
     </div>
-    <div v-else-if="type === 'long'">
-      <p>Description file:</p>
-      <form @submit.prevent="uploadFile">
-        <input type="file" accept=".xlsx" @change="handleFileUpload" />
-        <button type="submit">Upload</button>
-        <p>{{ message }}</p>
-      </form>
+    <div v-else-if="type === 'long'" class="container mt-4">
+        <h1 class="mb-4">Long Description:</h1>
+        <form @submit.prevent="uploadFile" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="excel_file" class="form-label">Choose Excel File:</label>
+                <input class="form-control" type="file" id="excel_file" name="excel_file" accept=".xlsx, .xls" @change="handleFileUpload" />
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+            <p>{{ message }}</p>
+        </form>
     </div>
-  </div>
+</div>
+
 </template>
 
 <script>
